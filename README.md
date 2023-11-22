@@ -64,7 +64,7 @@ Install the necessary packages using the provided [requirements.txt](https://ann
 pip install -r requirements.txt
 ```
 
-## Package Requirements 
+## Package requirements 
 
 Required packages are:
 
