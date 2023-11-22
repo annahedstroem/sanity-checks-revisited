@@ -38,7 +38,7 @@ The Model Parameter Randomisation Test (MPRT) is widely acknowledged in the eXpl
 
 All evaluation metrics used in these experiments are implemented in [Quantus](https://github.com/understandable-machine-intelligence-lab/Quantus), a widely-used toolkit for XAI evaluation. Benchmarking is performed with tools from [MetaQuantus](https://github.com/annahedstroem/MetaQuantus/), a specialised framework for meta-evaluating XAI metrics.
 
-The repository is organized for ease of use:
+The repository is organised for ease of use:
 - The `src/` folder contains all necessary functions.
 - The `nbs/` folder includes notebooks for generating the plots in the paper and for benchmarking experiments.
 
