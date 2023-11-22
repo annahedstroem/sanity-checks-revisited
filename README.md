@@ -1,4 +1,14 @@
-This repository contains the code and experimental results for the paper **[Sanity Checks Revisited: An Exploration to Repair the Model Parameter Randomisation Test](https://openreview.net/forum?id=vVpefYmnsG)** by Hedström et al., 2023.
+<br/><br/>
+<p align="center">
+  <img width="450" src="https://github.com/annahedstroem/sanity-checks-revisited/blob/394f166226e4ac415c6534e0e0441d8b3c9258f2/emprt_smprt_logo.png">
+<!--<h3 align="center"><b>Evaluate the Explanation Faithfulness</b></h3>
+<p align="center">
+  PyTorch-->
+
+  </p>
+
+This repository contains the code and experimental results for the paper **[Sanity Checks Revisited: An Exploration to Repair the Model Parameter Randomisation Test](https://openreview.net/forum?id=vVpefYmnsG)** by Hedström et al., 2023. 
+
 
 <!--[![Getting started!](https://colab.research.google.com/assets/colab-badge.svg)](anonymous)-->
 <!--![Python version](https://img.shields.io/badge/python-3.7%20%7C%203.8%20%7C%203.9%20%7C%203.10%20%7C%203.11-blue.svg)-->
@@ -9,7 +19,7 @@ This repository contains the code and experimental results for the paper **[Sani
 
 ## Citation
 
-If you find this work or its companion paper interesting or useful in your research, use the following Bibtex annotation to cite us:
+If you find this work interesting or useful in your research, use the following Bibtex annotation to cite us:
 
 ```bibtex
 @inproceedings{hedstroem2023sanity,
@@ -20,31 +30,31 @@ If you find this work or its companion paper interesting or useful in your resea
     url={https://openreview.net/forum?id=vVpefYmnsG}
 }
 ```
-<!--![Schematic visualisation of MPRT](https://raw.githubusercontent.com/annahedstroem/sanity-checks-revisited/main/motivation-3.png)-->
-
+This work has been published in _[XAI in Action: Past, Present, and Future Applications](https://xai-in-action.github.io/)_ workshop at the 37th Conference on Neural Information Processing Systems (NeurIPS).
 
 ## Overview
 
-The Model Parameter Randomisation Test (MPRT) is widely acknowledged in the eXplainable Artificial Intelligence (XAI) community for its well-motivated evaluative principle: that the explanation function should be sensitive to changes in the parameters of the model function. However, recent works have identified several methodological caveats for the empirical interpretation of MPRT. In this work, we introduce two adaptations to the original MPRT---Smooth MPRT and Efficient MPRT, where the former minimises the impact that noise has on the evaluation results and the latter circumvents the need for biased similarity measurements by re-interpreting the test through the explanation's rise in complexity, post-model randomisation. Our experimental results demonstrate improved metric reliability, for more trustworthy applications of XAI methods.
+The Model Parameter Randomisation Test (MPRT) is widely acknowledged in the eXplainable Artificial Intelligence (XAI) community for its well-motivated evaluative principle: that the explanation function should be sensitive to changes in the parameters of the model function. Recent studies, however, have pointed out practical limitations in MPRT's empirical application. To address these, we've introduced two adaptations: Smooth MPRT (sMPRT) and Efficient MPRT (eMPRT). sMPRT reduces noise effects in evaluations, while eMPRT avoids biased similarity measures by focusing on the complexity increase in explanations after model randomisation.
+
+All evaluation metrics used in these experiments are implemented in [Quantus](https://github.com/understandable-machine-intelligence-lab/Quantus), a widely-used toolkit for XAI evaluation. Benchmarking is performed with tools from [MetaQuantus](https://github.com/annahedstroem/MetaQuantus/), a specialised framework for meta-evaluating XAI metrics.
+
+The repository is organized for ease of use:
+- The `src/` folder contains all necessary functions.
+- The `nbs/` folder includes notebooks for generating the plots in the paper and for benchmarking experiments.
 
 </p>
 <p align="center">
-  <img width="600" src="https://raw.githubusercontent.com/annahedstroem/sanity-checks-revisited/main/motivation-3.png">
+  <img width="800" src="https://github.com/annahedstroem/sanity-checks-revisited/blob/33174dceeee19ef4bcfee5499b1436693c3121ea/motivation_3.png"> 
 </p>
+_Schematic visualisation of identified shortcomings _top_ and proposed solutions (_bottom_) of the MPRT [Adebayo et al., 2020](https://arxiv.org/pdf/1810.03292.pdf). Solid arrows signify shortcomings directly addressed by our proposed metrics, while dashed arrows denote those addressed through ideas from previous work [Sundararajan et al., 2018](https://arxiv.org/pdf/1806.04205.pdf), [Binder et al., 2022](https://arxiv.org/pdf/2211.12486.pdf). (a) The original MPRT evaluates an explanation method by randomising $f$'s parameters in a top-down, layer-by-layer manner and thereafter calculating explanation similarity $\rho(e, \hat{e})$ at each layer through comparing explanations $e$ of the original model $f$ and $\hat{e}$ of the randomised model $\hat{f}$. (b) Pre-processing: normalisation and taking absolute attribution values significantly impact MPRT results, potentially deleting pertinent information about feature importance carried in the sign. (c) Layer-order: top-down randomisation of layers in MPRT does not yield a fully random output, preserving properties of the unrandomised lower layers and thus affecting the evaluation of faithful explanations. (d) Similarity measures: the pairwise similarity measures used in the original MPRT [Adebayo et al., 2020](https://arxiv.org/pdf/1810.03292.pdf) are noise-sensitive, e.g., from gradient shattering and thus likely to impact evaluation rankings of XAI methods. (e) sMPRT extends MPRT by incorporating a preprocessing step that averages denoised attribution estimates over $N$ perturbed inputs, aiming to reduce noise in local explanation methods. (f) eMPRT reinterprets MPRT by evaluating the faithfulness of the attribution method by comparing its rise in complexity of a non- and fully random model._
 
-Schematic visualisation of identified shortcomings (\emph{top}) and proposed solutions (\emph{bottom}) of the MPRT \cite{adebayo2018}. Solid arrows signify shortcomings directly addressed by our proposed metrics, while dashed arrows denote those addressed through ideas from previous work \cite{sundararajan2018,bindershort}. (a) The original MPRT evaluates an explanation method by randomising $f$'s parameters in a top-down, layer-by-layer manner and thereafter calculating explanation similarity $\rho(\ve, \hat{\ve})$ at each layer through comparing explanations $\ve$ of the original model $f$ and $\hat{\ve}$ of the randomised model $\hat{f}$. (b) \textit{Pre-processing}: normalisation and taking absolute attribution values significantly impact MPRT results, potentially deleting pertinent information about feature importance carried in the sign. (c) \textit{Layer-order}: top-down randomisation of layers in MPRT does not yield a fully random output, preserving properties of the unrandomised lower layers and thus affecting the evaluation of faithful explanations. (d) \textit{Similarity measures}: the pairwise similarity measures used in the original MPRT \cite{adebayo2018} are noise-sensitive, e.g., from gradient shattering and thus likely to impact evaluation rankings of XAI methods. (e) sMPRT extends MPRT by incorporating a preprocessing step that averages denoised attribution estimates over $N$ perturbed inputs, aiming to reduce noise in local explanation methods. (f) eMPRT reinterprets MPRT by evaluating the faithfulness of the attribution method by comparing its rise in complexity of a non- and fully random model. 
+## Installation
 
+Install the necessary packages using the provided [requirements.txt](https://annahedstroem/sanity-checks-revisited/blob/main/requirements.txt):
 
-
-### Repo Instructions
-
-- **Metrics Implementation**: Implemented in [Quantus](https://github.com/understandable-machine-intelligence-lab/Quantus), a popular toolkit for XAI evaluation.
-- **Benchmarking**: Conducted using [MetaQuantus](https://github.com/annahedstroem/MetaQuantus/), a framework for meta-evaluating XAI metrics.
-- **Source Code**: Contains Python functions added in `src`.
-- **Notebooks**: Located in `nbs`, these include data generation for paper plots and benchmarking experiments.
-- **Dependencies**: Listed in `requirements.txt`.
-
-Note that these experiments require that [PyTorch](https://pytorch.org/) is installed on your machine.
+```bash
+pip install -r requirements.txt
+```
 
 ## Package Requirements 
 
@@ -58,10 +68,14 @@ metaquantus>=0.0.5
 captum>=0.4.1
 ```
 
-## Installation
+### Thank you
 
-Install the necessary packages using the provided [requirements.txt](https://annahedstroem/sanity-checks-revisited/blob/main/requirements.txt):
+We hope our repository is beneficial to your work and research. If you have any feedback, questions, or ideas, please feel free to raise an issue in this repository. Alternatively, you can reach out to us directly via email for more in-depth discussions or suggestions. 
 
-```bash
-pip install -r requirements.txt
-```
+📧 Contact us: 
+- Anna Hedström: [hedstroem.anna@gmail.com](mailto:hedstroem.anna@gmail.com)
+- Leander Weber: [leander.weber@hhi.fraunhofer.de](mailto:leander.weber@hhi.fraunhofer.de)
+
+Thank you for your interest and support!
+
+
