@@ -32,7 +32,7 @@ If you find this work interesting or useful in your research, use the following 
 ```
 This work has been published in _[XAI in Action: Past, Present, and Future Applications](https://xai-in-action.github.io/)_ workshop at the 37th Conference on Neural Information Processing Systems (NeurIPS).
 
-## Repository Overview
+## Repository overview
 
 All evaluation metrics used in these experiments are implemented in [Quantus](https://github.com/understandable-machine-intelligence-lab/Quantus), a widely-used toolkit for metric-based XAI evaluation. Benchmarking is performed with tools from [MetaQuantus](https://github.com/annahedstroem/MetaQuantus/), a specialised framework for meta-evaluating metrics in explainability.
 
@@ -40,7 +40,7 @@ The repository is organised for ease of use:
 - The `src/` folder contains all necessary functions.
 - The `nbs/` folder includes notebooks for generating the plots in the paper and for benchmarking experiments.
 
-## Paper Highlights
+## Paper highlights 📚
 
 The Model Parameter Randomisation Test (MPRT) [Adebayo et al., 2020](https://arxiv.org/pdf/1810.03292.pdf) is widely acknowledged in the eXplainable Artificial Intelligence (XAI) community for its well-motivated evaluative principle: that the explanation function should be sensitive to changes in the parameters of the model function. Recent studies, however, have pointed out practical limitations in MPRT's empirical application. To address these, we've introduced two adaptations: Smooth MPRT (sMPRT) and Efficient MPRT (eMPRT). sMPRT reduces noise effects in evaluations, while eMPRT avoids biased similarity measures by focusing on the complexity increase in explanations after model randomisation.
 
