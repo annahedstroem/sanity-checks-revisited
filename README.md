@@ -7,7 +7,7 @@
 
   </p>
 
-This repository contains the code and experimental results for the paper **[Sanity Checks Revisited: An Exploration to Repair the Model Parameter Randomisation Test](https://openreview.net/forum?id=vVpefYmnsG)** by Hedström et al., 2023. 
+This repository contains the code and experiments for the paper **[Sanity Checks Revisited: An Exploration to Repair the Model Parameter Randomisation Test](https://openreview.net/forum?id=vVpefYmnsG)** by Hedström et al., 2023. 
 
 
 <!--[![Getting started!](https://colab.research.google.com/assets/colab-badge.svg)](anonymous)-->
