@@ -1,3 +1,4 @@
+assets/
 src/__pycache__/
 nbs/.ipynb_checkpoints/
 nbs/temp_results/
