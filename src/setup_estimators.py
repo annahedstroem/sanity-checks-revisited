@@ -68,7 +68,7 @@ def setup_estimators(
     """
     return {
         "Randomisation": {
-            "EfficientMPRT": {
+            "eMPRT": {
                 "init": EfficientMPRT(
                     complexity_func=complexity_func,
                     layer_order=layer_order,
@@ -84,7 +84,7 @@ def setup_estimators(
                 ),
                 "score_direction": "higher",
             },
-            "SmoothMPRT": {
+            "sMPRT": {
                 "init": SmoothMPRT(
                     noise_magnitude=noise_magnitude,
                     nr_samples=nr_samples,

@@ -1,4 +1,5 @@
 assets/
-src/__pycache__/
+*__pycache__/
 nbs/.ipynb_checkpoints/
-nbs/temp_results/
+nbs/results/
+*.DS_store
