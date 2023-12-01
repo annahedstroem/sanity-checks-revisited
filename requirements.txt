@@ -1,5 +1,5 @@
 torch>=2.0.0
-quantus>=0.5.1
+quantus>=0.5.2
 metaquantus>=0.0.5
 captum>=0.6.0
 zennit>=0.5.1
