@@ -10,6 +10,15 @@ import skimage
 import matplotlib
 import pickle
 from collections import OrderedDict
+import copy
+
+from zennit import core as zcore
+from zennit import types as ztypes
+from zennit import layer as zlayer
+from zennit import canonizers as zcanon
+from zennit import rules as zrules
+from zennit import attribution as zattr
+from zennit import composites as zcomp
 
 from metaquantus import (
     load_obj,
@@ -1083,3 +1092,228 @@ def prepare_benchmarking_results(
     }
 
     return benchmarks_m1, xai_set
+
+def get_layer(model, layer_name):
+    for name, mod in model.named_modules():
+        if name == layer_name:
+            return mod
+        
+def randomise_model_layers(model, layer_name, order="top_down"):
+    randomised_model = copy.deepcopy(model)
+
+    modules = [
+        l
+        for l in randomised_model.named_modules()
+        if (hasattr(l[1], "reset_parameters"))
+    ]
+
+    if order == "target_layer":
+        for module in modules:
+            if layer_name == module[0]:
+                module[1].reset_parameters()
+                return randomised_model
+        raise ValueError(f"{layer_name} does not exist in model")
+
+    if order == "top_down":
+        modules = modules[::-1]
+
+    for module in modules:
+        print(order, module[0])
+        if layer_name == module[0]:
+            break
+        module[1].reset_parameters()
+
+    return randomised_model
+
+def store_output_hook(module, input, output):
+    module.tmp_stored_output = output
+
+def explain_activation(
+    model,
+    inputs,
+    layer_name,
+    device,
+    **kwargs,
+) -> np.ndarray:
+
+    # Get zennit composite, canonizer, attributor and handle canonizer kwargs.
+    canonizer = kwargs.get("canonizer", None)
+    if not canonizer == None and not issubclass(canonizer, zcanon.Canonizer):
+        raise ValueError(
+            "The specified canonizer is not valid. "
+            "Please provide None or an instance of zennit.canonizers.Canonizer"
+        )
+
+    # Handle attributor kwargs.
+    composite = kwargs.get("composite", None)
+    if not composite == None and isinstance(composite, str):
+        if composite not in zcomp.COMPOSITES.keys():
+            raise ValueError(
+                "Composite {} does not exist in zennit."
+                "Please provide None, a subclass of zennit.core.Composite, or one of {}".format(
+                    composite, zcomp.COMPOSITES.keys()
+                )
+            )
+        else:
+            composite = zcomp.COMPOSITES[composite]
+    if not composite == None and not issubclass(composite, zcore.Composite):
+        raise ValueError(
+            "The specified composite {} is not valid. "
+            "Please provide None, a subclass of zennit.core.Composite, or one of {}".format(
+                composite, zcomp.COMPOSITES.keys()
+            )
+        )
+
+    # Set model in evaluate mode.
+    model.eval()
+
+    if not isinstance(inputs, torch.Tensor):
+        inputs = torch.Tensor(inputs).to(device)
+
+    canonizer_kwargs = kwargs.get("canonizer_kwargs", {})
+    composite_kwargs = kwargs.get("composite_kwargs", {})
+
+    # Initialize canonizer, composite, and attributor.
+    if canonizer is not None:
+        canonizers = [canonizer(**canonizer_kwargs)]
+    else:
+        canonizers = []
+    if composite is not None:
+        composite = composite(
+            **{
+                **composite_kwargs,
+                "canonizers": canonizers,
+            }
+        )
+
+    layer = get_layer(model, layer_name)
+    handle = layer.register_forward_hook(store_output_hook)
+
+    # Get the attributions.
+    
+    composite.register(model)
+
+    if not inputs.requires_grad:
+        inputs.requires_grad = True
+    model(inputs)
+    activation = layer.tmp_stored_output
+    initital_relevance = torch.ones_like(activation)
+
+    explanation, = torch.autograd.grad(
+        (activation,),
+        (inputs,),
+        grad_outputs=(initital_relevance,)
+    )
+
+    if isinstance(explanation, torch.Tensor):
+        if explanation.requires_grad:
+            explanation = explanation.cpu().detach().numpy()
+        else:
+            explanation = explanation.cpu().numpy()
+
+    # Sum over the axes.
+    explanation = np.sum(explanation, axis=1, keepdims=True)
+
+    del layer.tmp_stored_output
+    composite.remove()
+    handle.remove()
+
+    return explanation
+
+def labelsorter(label, noisedraw_vals=None):
+
+    if noisedraw_vals is not None:
+        max_noisedraw_val = np.amax(noisedraw_vals)
+
+        for m, method in enumerate(COLOR_MAP.keys()):
+            if method in label:
+                for noisedraw_val in noisedraw_vals:
+                    if str(noisedraw_val) in label:
+                        return max_noisedraw_val * m + noisedraw_val
+    else:
+        for m, method in enumerate(COLOR_MAP.keys()):
+            if method in label:
+                return m
+
+    for m, method in enumerate(COLOR_MAP.keys()):
+            if method in label:
+                return m
+
+def get_random_layer_generator(model, order: str = "top_down"):
+    """
+    In every iteration yields a copy of the model with one additional layer's parameters randomized.
+    For cascading randomization, set order (str) to 'top_down'. For independent randomization,
+    set it to 'independent'. For bottom-up order, set it to 'bottom_up'.
+
+    Parameters
+    ----------
+    order: string
+        The various ways that a model's weights of a layer can be randomised.
+
+    Returns
+    -------
+    layer.name, random_layer_model: string, torch.nn
+        The layer name and the model.
+    """
+    original_parameters = model.state_dict()
+    random_layer_model = copy.deepcopy(model)
+
+    modules = [
+        l
+        for l in random_layer_model.named_modules()
+        if (hasattr(l[1], "reset_parameters"))
+    ]
+
+    if order == "top_down":
+        modules = modules[::-1]
+
+    for module in modules:
+        if order == "independent":
+            random_layer_model.load_state_dict(original_parameters)
+        module[1].reset_parameters()
+        yield module[0], random_layer_model
+
+def eval_accuracy(model, loader, device):
+    """
+    Evaluates Model.
+    """
+
+    # Initialize running measures
+    n_correct = 0
+    n_predicted = 0
+    total_labels = []
+    total_predictions = []
+
+    # Set model to eval mode
+    model.eval()
+
+    # Iterate over data. Show a progress bar.
+    #with tqdm(total=len(loader)) as pbar:
+    for i, (inputs, labels) in enumerate(loader):
+
+        # Prepare inputs and labels
+        inputs = inputs.to(device)
+        labels = labels.to(device)
+
+        with torch.no_grad():
+
+            outputs = model(inputs)
+
+        # Check if binary or multi-class
+        if outputs.shape[-1] == 1:
+            preds = (outputs > 0).squeeze()
+        else:
+            preds = torch.argmax(outputs, dim=1)
+
+        # Update accuracy counters
+        n_correct += (preds == labels).float().sum()
+        n_predicted += len(labels)
+
+        # Update prediction lists
+        for lab in labels.cpu().detach().numpy():
+            total_labels.append(lab)
+        for pred in preds.cpu().detach().numpy():
+            total_predictions.append(pred)
+
+    # Return labels, predictions, accuracy and loss
+    return total_labels, total_predictions, (n_correct/n_predicted).cpu().detach().numpy()

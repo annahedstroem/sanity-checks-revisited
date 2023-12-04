@@ -214,6 +214,24 @@ def setup_xai_methods_zennit(
             "composite_kwargs": {},
             "device": device,
         },
+        "Gradient": {
+            "xai_lib": "zennit",
+            "attributor": attribution.Gradient,
+            "canonizer": None,
+            "composite": None,
+            "canonizer_kwargs": {},
+            "composite_kwargs": {},
+            "device": device,
+        },
+        "Saliency": {
+            "xai_lib": "zennit",
+            "attributor": attribution.Gradient,
+            "canonizer": None,
+            "composite": None,
+            "canonizer_kwargs": {},
+            "composite_kwargs": {},
+            "device": device,
+        },
     }
 
     return {

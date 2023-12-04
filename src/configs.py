@@ -2,6 +2,9 @@
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as font_manager
 import numpy as np
+import torch.utils.data as tdata
+import torchvision
+import torchvision.transforms as T
 
 # Set font properties.
 font_path = plt.matplotlib.get_data_path() + "/fonts/ttf/cmr10.ttf"
@@ -23,7 +26,7 @@ plt.rcParams["axes.formatter.use_mathtext"] = True
 palette = plt.cm.get_cmap("tab20")(np.linspace(0, 1, 20))
 std_alpha = 0.2
 
-LAYER_ORDER_MAP = {"top_down": "top-down", "bottom_up": "bottom_up"}
+LAYER_ORDER_MAP = {"top_down": "Top-Down", "bottom_up": "Bottom-Up"}
 
 COLOR_MAP = {
     "Model": "black",
@@ -67,4 +70,35 @@ PLOTTING_COLOURS = {
     "MPRT_ImageNet_ResNet18": "#5aae61",
     "MPRT_MNIST_LeNet": "#a6dba0",
     "MPRT_fMNIST_LeNet": "#d9f0d3",
+}
+
+HATCH_MAP = {
+    "top_down": "///", 
+    "bottom_up": ".",
+}
+LINESTYLE_ORDER = ["dashed", "solid"]
+
+LINESTYLE_MAP = {
+    "1": "dashed",
+    "50": "solid",
+}
+
+TV_MODEL_MAP = {
+    "resnet50": torchvision.models.resnet50,
+    "resnet34": torchvision.models.resnet34,
+    "resnet18": torchvision.models.resnet18,
+    "densenet121": torchvision.models.densenet121,
+    "vgg16": torchvision.models.vgg16,
+}
+
+DATALOADER_MAPPING = {
+    "imagenet": tdata.DataLoader,
+}
+
+TRANSFORM_MAP = {
+    "imagenet": {
+            "train": [T.RandomResizedCrop(224), T.RandomHorizontalFlip(), T.ToTensor(), T.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))],
+            "test": [T.Resize((224, 224)),  T.ToTensor(), T.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))],
+            "val": [T.Resize((224, 224)),  T.ToTensor(), T.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))],
+    },
 }
