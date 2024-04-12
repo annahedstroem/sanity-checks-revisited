@@ -53,7 +53,8 @@ Schematic visualisation of the original MPRT [Adebayo et al., 2020](https://arxi
 - (a) The original MPRT evaluates an explanation method by randomising $f$'s parameters in a top-down, layer-by-layer manner and thereafter calculating explanation similarity $\rho(e, \hat{e})$ at each layer through comparing explanations $e$ of the original model $f$ and $\hat{e}$ of the randomised model $\hat{f}$. 
 - (b) Pre-processing: normalisation and taking absolute attribution values significantly impact MPRT results, potentially deleting pertinent information about feature importance carried in the sign. 
 - (c) Layer-order: top-down randomisation of layers in MPRT does not yield a fully random output, preserving properties of the unrandomised lower layers and thus affecting the evaluation of faithful explanations. 
-- (d) Similarity measures: the pairwise similarity measures used in the original MPRT [Adebayo et al., 2020](https://arxiv.org/pdf/1810.03292.pdf) are noise-sensitive, e.g., from gradient shattering and thus likely to impact evaluation rankings of XAI methods. - (e) sMPRT extends MPRT by incorporating a preprocessing step that averages denoised attribution estimates over $N$ perturbed inputs, aiming to reduce noise in local explanation methods. 
+- (d) Similarity measures: the pairwise similarity measures used in the original MPRT [Adebayo et al., 2020](https://arxiv.org/pdf/1810.03292.pdf) are noise-sensitive, e.g., from gradient shattering and thus likely to impact evaluation rankings of XAI methods.
+- (e) sMPRT extends MPRT by incorporating a preprocessing step that averages denoised attribution estimates over $N$ perturbed inputs, aiming to reduce noise in local explanation methods. 
 - (f) eMPRT reinterprets MPRT by evaluating the faithfulness of the attribution method by comparing its rise in complexity of a non- and fully random model.
 
 ## Installation
