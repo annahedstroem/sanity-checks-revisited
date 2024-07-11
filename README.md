@@ -7,7 +7,7 @@
 
   </p>
 
-This repository contains the code and experiments for the paper **[A Fresh Look at Sanity Checks for Saliency Maps](https://openreview.net/forum?id=vVpefYmnsG)** by Hedström et al., 2023. 
+This repository contains the code and experiments for the paper **[A Fresh Look at Sanity Checks for Saliency Maps](https://openreview.net/forum?id=vVpefYmnsG)** by Hedström et al., 2024. 
 
 
 <!--[![Getting started!](https://colab.research.google.com/assets/colab-badge.svg)](anonymous)-->
