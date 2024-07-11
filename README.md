@@ -1,6 +1,6 @@
 <br/><br/>
 <p align="center">
-  <img width="450" src="https://github.com/annahedstroem/sanity-checks-revisited/blob/emprt_smprt_logo_alphamapped.png">
+  <img width="450" src="https://github.com/annahedstroem/sanity-checks-revisited/blob/394f166226e4ac415c6534e0e0441d8b3c9258f2/emprt_smprt_logo.png">
 <!--<h3 align="center"><b>Evaluate the Explanation Faithfulness</b></h3>
 <p align="center">
   PyTorch-->
