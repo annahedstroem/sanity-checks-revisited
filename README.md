@@ -37,7 +37,7 @@ If you find this work interesting or useful in your research, use the following 
       address="Cham",
       pages="403--420"}
 ```
-This work has been published as a part of the World Conference on Explainable Artificial Intelligence conference series (xAI, 2024) at Springer, Cham and in _[XAI in Action: Past, Present, and Future Applications](https://xai-in-action.github.io/)_ workshop at the 37th Conference on Neural Information Processing Systems (NeurIPS).
+This work has been published as a part of the [World Conference on Explainable Artificial Intelligence](https://link.springer.com/book/10.1007/978-3-031-63787-2) conference series (xAI, 2024) at Springer, Cham and in _[XAI in Action: Past, Present, and Future Applications](https://xai-in-action.github.io/)_ workshop at the 37th Conference on Neural Information Processing Systems (NeurIPS).
 
 ## Repository overview
 
