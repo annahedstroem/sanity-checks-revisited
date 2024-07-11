@@ -7,7 +7,7 @@
 
   </p>
 
-This repository contains the code and experiments for the paper **[Sanity Checks Revisited: An Exploration to Repair the Model Parameter Randomisation Test](https://openreview.net/forum?id=vVpefYmnsG)** by Hedström et al., 2023. 
+This repository contains the code and experiments for the paper **[A Fresh Look at Sanity Checks for Saliency Maps](https://openreview.net/forum?id=vVpefYmnsG)** by Hedström et al., 2023. 
 
 
 <!--[![Getting started!](https://colab.research.google.com/assets/colab-badge.svg)](anonymous)-->
@@ -22,15 +22,22 @@ This repository contains the code and experiments for the paper **[Sanity Checks
 If you find this work interesting or useful in your research, use the following Bibtex annotation to cite us:
 
 ```bibtex
-@inproceedings{hedstroem2023sanity,
-    title={Sanity Checks Revisited: An Exploration to Repair the Model Parameter Randomisation Test},
-    author={Anna Hedstr{\"o}m and Leander Weber and Sebastian Lapuschkin and Marina H{\"o}hne},
-    booktitle={XAI in Action: Past, Present, and Future Applications},
-    year={2023},
-    url={https://openreview.net/forum?id=vVpefYmnsG}
-}
+@InProceedings{hedstroem2023sanity,
+      author="Hedstr{\"o}m, Anna
+      and Weber, Leander
+      and Lapuschkin, Sebastian
+      and H{\"o}hne, Marina",
+      editor="Longo, Luca
+      and Lapuschkin, Sebastian
+      and Seifert, Christin",
+      title="A Fresh Look at Sanity Checks for Saliency Maps",
+      booktitle="Explainable Artificial Intelligence",
+      year="2024",
+      publisher="Springer Nature Switzerland",
+      address="Cham",
+      pages="403--420"}
 ```
-This work has been published in _[XAI in Action: Past, Present, and Future Applications](https://xai-in-action.github.io/)_ workshop at the 37th Conference on Neural Information Processing Systems (NeurIPS).
+This work has been published as a part of the World Conference on Explainable Artificial Intelligence conference series (xAI, 2024) at Springer, Cham and in _[XAI in Action: Past, Present, and Future Applications](https://xai-in-action.github.io/)_ workshop at the 37th Conference on Neural Information Processing Systems (NeurIPS).
 
 ## Repository overview
 
