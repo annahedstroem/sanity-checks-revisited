@@ -27,9 +27,6 @@ If you find this work interesting or useful in your research, use the following 
       and Weber, Leander
       and Lapuschkin, Sebastian
       and H{\"o}hne, Marina",
-      editor="Longo, Luca
-      and Lapuschkin, Sebastian
-      and Seifert, Christin",
       title="A Fresh Look at Sanity Checks for Saliency Maps",
       booktitle="Explainable Artificial Intelligence",
       year="2024",
